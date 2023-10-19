@@ -33,7 +33,7 @@ const Home = () => {
                 </div>
 
                 <div>
-                    <PostsContainer postsData={postsData}></PostsContainer>
+                    <PostsContainer refetch={refetch} postsData={postsData}></PostsContainer>
                 </div>
 
             </div>

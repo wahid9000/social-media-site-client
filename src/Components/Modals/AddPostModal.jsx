@@ -3,14 +3,15 @@ import MainModal from "./MainModal";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import useProfile from "../../Hooks/useProfile";
 
 const AddPostModal = ({ isOpen, setIsOpen, closeModal, refetch }) => {
-
     const { register, handleSubmit, reset, formState: { errors } } = useForm()
+    const user = useProfile();
     const [loading, setLoading] = useState(false)
 
     const onSubmit = async(data) => {
-        const post_data = { userId: 1, ...data }
+        const post_data = { user_id: user?.id, ...data }
         setLoading(true)
         try {
             const response = await axios.post('http://127.0.0.1:3333/posts', post_data)
@@ -30,7 +31,6 @@ const AddPostModal = ({ isOpen, setIsOpen, closeModal, refetch }) => {
             setLoading(false)
         }
     }
-
 
     return (
         <div>

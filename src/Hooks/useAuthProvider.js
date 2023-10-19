@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +15,9 @@ const useAuthProvider = () => {
     try {
       const response = await axios.post(url, data);
       if (response.status === 200) {
+        const userData = response.data;
+        Cookies.set("user", JSON.stringify(userData));
+        console.log('Logged-in User:', userData);
         toast.success(successMessage);
         reset();
         navigate(redirectPath);

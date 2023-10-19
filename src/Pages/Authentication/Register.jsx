@@ -4,7 +4,6 @@ import useAuthProvider from "../../Hooks/useAuthProvider";
 const Register = () => {
     const { register, handleSubmit, onSubmit, loading, errors } = useAuthProvider();
     const handleRegister = (data) => {
-        console.log(import.meta.env.VITE_API_BASE_URL);
         onSubmit(
             `${import.meta.env.VITE_API_BASE_URL}/users`,
             data,

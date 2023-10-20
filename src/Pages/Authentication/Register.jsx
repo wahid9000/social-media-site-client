@@ -1,23 +1,27 @@
-import { Link } from "react-router-dom";
-import useAuthProvider from "../../Hooks/useAuthProvider";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
-    const { register, handleSubmit, onSubmit, loading, errors } = useAuthProvider();
-    const handleRegister = (data) => {
-        onSubmit(
-            `${import.meta.env.VITE_API_BASE_URL}/users`,
-            data,
-            'User Created Successfully',
-            'Failed to create the User',
-            '/login'
-        );
-    };
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { createUser, loading } = useContext(AuthContext)
+    const navigate = useNavigate();
+
+    const onSubmit = (data) => {
+        const response = createUser(data);
+        console.log(response);
+        toast.success("Registration Successful. Please Login");
+        navigate('/login');
+        reset();
+    }
 
     return (
         <div className="card flex-shrink-0 w-full mx-auto mt-20 max-w-sm shadow-2xl bg-base-100">
             <div className="text-center p-4">
                 <h2 className="text-3xl font-bold">Sign Up</h2>
-                <form className="card-body" onSubmit={handleSubmit(handleRegister)}>
+                <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-control">
                         <input type="text" id="user_name" placeholder="*Enter your Username" className="input input-bordered"  {...register("user_name", {
                             required: true,

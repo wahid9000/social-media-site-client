@@ -1,12 +1,12 @@
 import { FaHome } from 'react-icons/fa';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
-import useProfile from '../../Hooks/useProfile';
-import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../../Provider/AuthProvider';
 
 const Navbar = () => {
-    const user = useProfile();
+    const { user, setUser, logoutUser } = useContext(AuthContext)
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -18,18 +18,26 @@ const Navbar = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-        Cookies.remove("user");
-        navigate('/login');
-        Swal.fire(
-            'Success',
-            'Logout successful',
-            'success'
-          )
-        }
-      })
+                logoutUser();
+                navigate('/login');
+                Swal.fire(
+                    'Success',
+                    'Logout successful',
+                    'success'
+                )
+            }
+        })
     };
+
+    useEffect(() => {
+        if (user === null) {
+          setUser(JSON.parse(localStorage.getItem("user")));
+        }
+      }, [setUser,user]);
+
+    console.log(user);
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
